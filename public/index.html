@@ -9,23 +9,24 @@
 	<title>WebSocket Chat</title>
 </head>
 <body>
-<!--	Modal window-->
-	<div class="modal" id="modal">
+<!--	Модальное окно для ввода username-->
+	<div class="modal" id="usernameModal">
 		<div class="modal-content">
-			<h3>Добро пожаловать!</h3>
-			<p>Пожалуйста представьтесь</p>
-			<input type="text" id="usernameInput" placeholder="Введите Ваше имя">
-			<button id="submitButton">Подтвердить</button>
+			<h2>Введите Ваше имя</h2>
+			<input type="text" id="usernameInput" placeholder="Ваше имя...">
+			<button id="usernameSubmit">Войти в чат</button>
 		</div>
 	</div>
+
+<!--	Окно основного чата-->
 	<div class="chat-container">
-		<div class="chat-header">WebSocket Chat</div>
 		<div class="chat-message" id="chatMessage"></div>
-		<div class="chat-input">
-			<input type="text" id="messageInput" placeholder="Введите сообщение" autocomplete="off">
-			<button type="submit" id="submitMessage">Отправить</button>
+		<div class="input-container">
+			<input type="text" id="messageInput" placeholder="Введите сообщение...">
+			<button id="sendButton">Отправить</button>
 		</div>
 	</div>
+
 <script src="client.js"></script>
 </body>
 </html>

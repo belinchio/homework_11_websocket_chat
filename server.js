@@ -7,7 +7,7 @@ const server = new WebSocket.Server({port: 3000}) // Создаем сервер
 server.on("connection", connection => {
     try {
         console.log("Новое подключение");
-        connection.add(connection);
+        clients.add(connection);
 
         // Отправка приветственного сообщение
         connection.send(JSON.stringify({
