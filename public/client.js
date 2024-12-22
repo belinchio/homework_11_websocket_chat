@@ -39,7 +39,7 @@ const displayMessage = (data) => {
         messageDiv.className = "message";
         const usernameSpan = document.createElement("span");
         usernameSpan.className = "username";
-        usernameSpan.textContent = data.username;
+        usernameSpan.textContent = data.username + ": ";
 
         messageDiv.appendChild(usernameSpan);
         messageDiv.appendChild(document.createTextNode(data.text));
