@@ -1,46 +1,52 @@
-require("dotenv").config();
-const ws = require("ws");
-const port = process.env.PORT || 3001;
-const clients = new Set();
+const WebSocket = require("ws");
 
-const wss = new ws.Server({port: port});
+const clients= new Set(); // Создаем хранилище подключенных клиентов
 
-const messageDistribution = (message) => {
-    clients.forEach(client => {
-        const messageStr = JSON.stringify(message);
-        if (client.readyState === ws.OPEN) {
-            client.send(message);
-            console.log(messageStr);
-        }
-    });
-};
+const server = new WebSocket.Server({port: 3000}) // Создаем сервер на порту 3000
 
-wss.on("connection", socket => {
-    clients.add(socket);
-    console.log("Новое подключение");
+server.on("connection", connection => {
+    try {
+        console.log("Новое подключение");
+        connection.add(connection);
+    } catch (err) {
+        console.error(`Ошибка подключения: ${err}`);
+    }
 
-    // Отправка приветственного сообщения
-    socket.send(JSON.stringify({
+    // Отправка приветственного сообщение
+    connection.send(JSON.stringify({
         type: "system",
-        text: "Добро пожаловать в чат!"
+        text: "Добро пожаловать в чат!",
     }));
 
-    //Обработка сообщений от клиента
-    socket.on("message", message => {
-        const data = JSON.parse(message);
-        if (data.type === "message") {
-            console.log(`Сообщение от ${data.username}: ${data.text}`);
-            messageDistribution({
-                type: "message",
-                username: data.username,
-                text: data.text
+    // Обработка входящих сообщений от клиента
+    connection.on("message", message => {
+        try {
+            const data = JSON.parse(message);
+            console.log(`Сщщбщение от ${data.username}: ${data.text}`);
+            clients.forEach(client => {
+                if(client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify({
+                        type: "message",
+                        username: data.username,
+                        text: data.text,
+                    }));
+                }
             });
+        } catch (err) {
+            console.error("Ошибка обработкт сообщения: ", err);
         }
-        // else if (data.type === "system") {
-        //     console.log(``)
-        // }
+    });
+
+    //Обработка отключения клиента
+    connection.on("close", () => {
+        try {
+            console.log("Клиент отключился");
+            clients.delete(connection);
+        } catch (err) {
+            console.error(`Ошибка обработки данных: ${err}`);
+        }
     });
 });
 
-console.log(`Сервер запущен на http://127.0.0.1:${port}`)
+console.log("Сервер запущен на порту: 3000");
 
