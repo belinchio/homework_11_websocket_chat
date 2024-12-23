@@ -1,8 +1,8 @@
 const WebSocket = require("ws");
 
-const clients= new Set(); // Создаем хранилище подключенных клиентов
+const clients = new Set(); // Создаем хранилище подключенных клиентов
 
-const server = new WebSocket.Server({port: 3000}) // Создаем сервер на порту 3000
+const server = new WebSocket.Server({port: 3000}); // Создаем сервер на порту 3000
 
 server.on("connection", connection => {
     try {
@@ -19,9 +19,9 @@ server.on("connection", connection => {
         connection.on("message", message => {
             try {
                 const data = JSON.parse(message);
-                console.log(`Сщщбщение от ${data.username}: ${data.text}`);
+                console.log(`Сообщение от ${data.username}: ${data.text}`);
                 clients.forEach(client => {
-                    if(client.readyState === WebSocket.OPEN) {
+                    if (client.readyState === WebSocket.OPEN) {
                         client.send(JSON.stringify({
                             type: "message",
                             username: data.username,
@@ -30,7 +30,7 @@ server.on("connection", connection => {
                     }
                 });
             } catch (err) {
-                console.error("Ошибка обработкт сообщения: ", err);
+                console.error("Ошибка обработки сообщения: ", err);
             }
         });
 

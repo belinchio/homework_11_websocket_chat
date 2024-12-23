@@ -10,7 +10,7 @@ const modal = document.getElementById("usernameModal");
 // Инициализация websocket сщудинения
 const webSocketConnection = () => {
     try {
-       ws = new WebSocket("ws://localhost:3000");
+        ws = new WebSocket("ws://localhost:3000");
 
         ws.onmessage = (event) => {
             try {
@@ -23,7 +23,7 @@ const webSocketConnection = () => {
 
         ws.onclose = () => {
             console.log("Соединение закрыто");
-        }
+        };
     } catch (err) {
         console.error(`Ошибка подключения: ${err}`);
     }
@@ -47,7 +47,7 @@ const displayMessage = (data) => {
 
     chatMessage.appendChild(messageDiv);
     chatMessage.scrollTop = chatMessage.scrollHeight;
-}
+};
 
 // Отправка сообщения
 const sendMessage = () => {
@@ -81,5 +81,5 @@ document.addEventListener("DOMContentLoaded", () => {
     usernameSubmit.addEventListener("click", setUsername);
     usernameInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") setUsername();
-    })
-})
+    });
+});
